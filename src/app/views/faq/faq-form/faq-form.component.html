@@ -1,0 +1,48 @@
+<div fxLayout="column" class="faq-container">
+    <div class="pt-8 pb-32 custom-loader" *ngIf="true" fxLayout="row" fxLayoutAlign="space-around center">
+      <app-loader></app-loader>
+    </div>
+    <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="end flex-end">
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between flex-end">
+            <span class="title dialog-title">{{isViewOnly?'View':'Create'}} FAQ</span>
+            <button class="mat-icon-button mat-button" aria-label="Close dialog" mat-button (click)="matDialog.close()">
+                <span class="mat-button-wrapper">
+                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">close</mat-icon>
+                </span>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content p-20 " fxLayout="column">
+        <form [formGroup]="faqForm" fxLayout="column">
+            <div fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field class="mt-0" ngClass="pr-10" ngClass.xs="pr-0" fxFlex="100">
+                    <mat-label>Question
+                        <!-- <span class="color-red">*</span> -->
+                    </mat-label>
+                    <input matInput placeholder="Question" formControlName="question" trim autocomplete="off"
+                        [errorStateMatcher]="matcher" maxlength="50" [readonly]="isViewOnly">
+                    <mat-error *ngIf="faqForm.controls['question'].hasError('required')">Required</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field class="mt-0" fxFlex="100">
+                    <mat-label>Answer
+                        <!-- <span class="color-red">*</span> -->
+                    </mat-label>
+                    <textarea matInput placeholder="Answer" formControlName="answer" trim autocomplete="off"
+                        [errorStateMatcher]="matcher" maxlength="50" [readonly]="isViewOnly"></textarea>
+                    <mat-error *ngIf="faqForm.controls['answer'].hasError('required')">Required</mat-error>
+                </mat-form-field>
+            </div>
+
+        </form>
+    </div>
+    <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="center"  *ngIf="!isViewOnly" >
+        <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100">
+            <button type="submit" mat-raised-button color="accent" [disabled]="faqForm.invalid "
+                (click)="saveUser()">Save</button>
+            <button type="button" mat-raised-button color="primary" class="mr-20"
+                (click)="matDialog.close()">Cancel</button>
+        </div>
+    </mat-toolbar>
+</div>
