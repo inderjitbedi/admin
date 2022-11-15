@@ -2,19 +2,25 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
+import { AuthGuard } from 'src/app/providers/auth.guard';
+import { Constants } from 'src/app/providers/constant';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   @ViewChild(MatSidenav)
- sidenav!: MatSidenav;
+  sidenav!: MatSidenav;
 
-  constructor(private observer: BreakpointObserver, public router: Router,) {
+  constructor(
+    private observer: BreakpointObserver,
+    public router: Router,
+    public authGuard: AuthGuard
+  ) {
     this.currentUrl = this.router.url;
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
       }
@@ -25,11 +31,9 @@ export class DashboardComponent implements OnInit {
     fixed: false,
     top: 0,
   };
-  ngOnInit(): void {
-    
-  }
-  
-  currentUrl:any;
+  ngOnInit(): void {}
+
+  currentUrl: any = Constants.Pages.FAQ_LIST;
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
       if (res.matches) {
@@ -40,5 +44,8 @@ export class DashboardComponent implements OnInit {
         this.sidenav.open();
       }
     });
+  }
+  logout() {
+    this.authGuard.logout();
   }
 }

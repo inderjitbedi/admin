@@ -1,0 +1,16 @@
+.custom-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #ffffffa8;
+    z-index: 9999999999;
+  }
+
+  .mt-20{
+    margin-top: 20px !important;
+  }

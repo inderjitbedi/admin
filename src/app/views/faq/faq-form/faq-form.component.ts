@@ -1,18 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'src/app/providers/alert.service';
 import { apiConstants } from 'src/app/providers/api.constants';
 import { CommonAPIService } from 'src/app/providers/api.service';
 import { ErrorHandlingService } from 'src/app/providers/error-handling.service';
-
 import { ErrorStateMatcherService } from 'src/app/providers/error-matcher.service';
-import { Validator } from 'src/app/providers/Validator';
 
 @Component({
   selector: 'app-faq-form',
   templateUrl: './faq-form.component.html',
   styleUrls: ['./faq-form.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class FaqFormComponent implements OnInit {
   isViewOnly: any;
