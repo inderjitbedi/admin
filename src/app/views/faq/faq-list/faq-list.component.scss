@@ -1,3 +1,36 @@
 table {
     width: 100%;
+    th.mat-header-cell{
+      font-weight: 600;
+    }
+    td,th{
+      font-size: 13px;
+      padding: 8px;
+      button{
+        margin-right: 5px;
+      }
+      &:first-child{
+        width: 100px;
+        word-break: break-all;
+      }
+      &:last-child{
+        width: 150px;
+        // text-align: center;
+        align-content: flex-end;
+        .mat-icon-button{
+          width: 25px;
+        }
+      }
+    }
+  }
+  .title-group{
+    display: flex;
+    h1{
+      color: #000;
+    }
+    // flex-direction: column;
+    button{
+      margin-left: auto;
+      margin-bottom: 15px;
+    }
   }

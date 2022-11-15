@@ -2,8 +2,8 @@
     <div class="pt-8 pb-32 custom-loader" *ngIf="true" fxLayout="row" fxLayoutAlign="space-around center">
       <app-loader></app-loader>
     </div>
-    <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="end flex-end">
-        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between flex-end">
+    <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="end flex-end" >
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between flex-end" class="mat-toolbar-header">
             <span class="title dialog-title">{{isViewOnly?'View':'Create'}} FAQ</span>
             <button class="mat-icon-button mat-button" aria-label="Close dialog" mat-button (click)="matDialog.close()">
                 <span class="mat-button-wrapper">
@@ -12,8 +12,8 @@
             </button>
         </div>
     </mat-toolbar>
-    <div class="content p-20 " fxLayout="column">
-        <form [formGroup]="faqForm" fxLayout="column">
+    <div class="content p-20" fxLayout="column">
+        <form [formGroup]="faqForm" fx-layout="column">
             <div fxLayout="column" fxLayout.gt-xs="row">
                 <mat-form-field class="mt-0" ngClass="pr-10" ngClass.xs="pr-0" fxFlex="100">
                     <mat-label>Question
@@ -38,10 +38,10 @@
         </form>
     </div>
     <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="center"  *ngIf="!isViewOnly" >
-        <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100">
-            <button type="submit" mat-raised-button color="accent" [disabled]="faqForm.invalid "
+        <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100" class="mat-toolbar-footer">
+            <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid "
                 (click)="saveUser()">Save</button>
-            <button type="button" mat-raised-button color="primary" class="mr-20"
+            <button type="button" mat-raised-button  class="mr-20"
                 (click)="matDialog.close()">Cancel</button>
         </div>
     </mat-toolbar>
