@@ -19,7 +19,7 @@ export class LoaderInterceptor implements HttpInterceptor {
       this.apiCounter += 1;
       if (!this.timeoutInstance) {
         this.timeoutInstance = setTimeout(() => {
-          this.loaderService.show();
+          this.loaderService.show(true);
           this.loaderActive = true;
         }, 1000);
       }
@@ -30,7 +30,7 @@ export class LoaderInterceptor implements HttpInterceptor {
           if (!this.urlsDontNeedLoader.find(url => req.url.indexOf(url) > -1)) {
             this.apiCounter -= 1;
             if (!this.apiCounter && this.loaderActive) {
-              this.loaderService.hide();
+              this.loaderService.show(false);
               this.loaderActive = false;
             }
             clearTimeout(this.timeoutInstance);

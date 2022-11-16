@@ -5,7 +5,7 @@ import { apiConstants } from 'src/app/providers/api.constants';
 import { CommonAPIService } from 'src/app/providers/api.service';
 import { ErrorHandlingService } from 'src/app/providers/error-handling.service';
 
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { FaqFormComponent } from '../faq-form/faq-form.component';
 @Component({
   selector: 'app-faq-list',
@@ -13,7 +13,10 @@ import { FaqFormComponent } from '../faq-form/faq-form.component';
   styleUrls: ['./faq-list.component.scss'],
 })
 export class FaqListComponent implements OnInit {
-    addUserDialogRef: any;
+  addUserDialogRef: any;
+  displayedColumns: string[];
+  dataSource: any ;
+  activeApiCall: boolean = true;
 
   constructor(
     private apiService: CommonAPIService,
@@ -21,25 +24,21 @@ export class FaqListComponent implements OnInit {
     private errorHandlingService: ErrorHandlingService,
     private _snackBar: MatSnackBar
   ) {
-    this.getFaqs();
+    this.displayedColumns = ['id', 'question', 'action']
   }
-  displayedColumns: string[] = ['id', 'question', 'action'];
-  dataSource: any = [];
+  ngOnInit(): void {
+      this.getFaqs();
+  }
 
-  ngOnInit(): void {}
-
-  openCreateFaqDialog() {}
-
-  openFaqForm(isViewOnly: boolean,faqData:any = {}): void {
+  openFaqForm(isViewOnly: boolean, faqData: any = {}): void {
     this.addUserDialogRef = this.dialog.open(FaqFormComponent, {
       minWidth: '320px',
       width: '585px',
       disableClose: true,
-      data: { isViewOnly ,...faqData},
+      data: { isViewOnly, ...faqData },
     });
     this.addUserDialogRef.afterClosed().subscribe({
       next: (data: any) => {
-        console.log('data in close response', data);
         if (data) {
           this.getFaqs();
         }
@@ -47,21 +46,20 @@ export class FaqListComponent implements OnInit {
     });
   }
   getFaqs() {
+    this.activeApiCall = true;
     this.apiService.get(apiConstants.faq).subscribe({
       next: (data) => {
-        console.log("getFaqs:next:data",data);
-        
+        this.activeApiCall = false;
         if (data.statusCode === 200) {
           this.dataSource = new MatTableDataSource<any>(data.response);
-          console.log(  this.dataSource);
-          
         } else {
           this.errorHandlingService.handle(data);
         }
       },
       error: (e) => {
-        console.log("getFaqs:error:e",e);
-        this.errorHandlingService.handle(e)}
+        this.activeApiCall = false;
+        this.errorHandlingService.handle(e);
+      },
     });
   }
   deleteFaq(index: number, faq: any) {
