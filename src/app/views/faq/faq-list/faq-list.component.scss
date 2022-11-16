@@ -1,17 +1,25 @@
 table {
     width: 100%;
+    table-layout: fixed;
     th.mat-header-cell{
       font-weight: 600;
     }
     td,th{
       font-size: 13px;
       padding: 8px;
+      vertical-align: top;
       button{
         margin-right: 5px;
       }
       &:first-child{
         width: 100px;
         word-break: break-all;
+      }
+      &:nth-child(2){
+        white-space: nowrap;
+        width: 716px;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       &:last-child{
         width: 150px;
@@ -33,4 +41,12 @@ table {
       margin-left: auto;
       margin-bottom: 15px;
     }
+  }
+
+  .no-data{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: calc(100% - 51px);
+    align-items: center;
   }

@@ -12,7 +12,7 @@
             </button>
         </div>
     </mat-toolbar>
-    <mat-divider></mat-divider>
+    <!-- <mat-divider></mat-divider> -->
     <div class="content p-20 mt-20" fxLayout="column">
         <form [formGroup]="faqForm" fx-layout="column">
             <div fxLayout="column" fxLayout.gt-xs="row">
@@ -20,9 +20,10 @@
                     <mat-label>Question
                         <!-- <span class="color-red">*</span> -->
                     </mat-label>
-                    <textarea matInput placeholder="Question" [rows]="3" formControlName="question" trim autocomplete="off"
+                    <textarea matInput  [rows]="3" formControlName="question" trim autocomplete="off"
                         [errorStateMatcher]="matcher" maxlength="1000" [readonly]="isViewOnly"></textarea>
                     <mat-error *ngIf="faqForm.controls['question'].hasError('required')">Required</mat-error>
+                    <mat-hint align="end">Min 1</mat-hint>
                 </mat-form-field>
             </div>
             <div fxLayout="column" fxLayout.gt-xs="row">
@@ -30,8 +31,9 @@
                     <mat-label>Answer
                         <!-- <span class="color-red">*</span> -->
                     </mat-label>
-                    <textarea matInput placeholder="Answer" formControlName="answer" trim autocomplete="off"
+                    <textarea matInput formControlName="answer" trim autocomplete="off"
                         [errorStateMatcher]="matcher" maxlength="2500"  [rows]="5" [readonly]="isViewOnly"></textarea>
+                        <mat-hint align="end">Min 1</mat-hint>
                     <mat-error *ngIf="faqForm.controls['answer'].hasError('required')">Required</mat-error>
                 </mat-form-field>
             </div>

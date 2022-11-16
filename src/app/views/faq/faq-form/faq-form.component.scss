@@ -28,7 +28,13 @@
     width: 100%;
     justify-content: space-between;
 }
-
+.mat-toolbar-single-row{
+    height: auto;
+}
+.mat-form-field-hint-wrapper {
+    display: block !important;
+    text-align: right;
+}
 // .p-20{
 //     padding: 20px;
 // }

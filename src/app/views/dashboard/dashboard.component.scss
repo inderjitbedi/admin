@@ -30,18 +30,18 @@ mat-sidenav {
 
 
 .content {
-    height: calc(100vh - 98px);
+    height: calc(100vh - 140px);
     border-radius: 10px;
     margin: 16px;
     margin-left: 32px;
     padding:20px;
-    // display: flex;
+    overflow-y: auto;
     justify-content: center;
     align-items: center;
-
     font-size: 2rem;
     color: lightgray;
 }
+
 
 mat-sidenav-container {
     height: calc(100vh - 65px);
