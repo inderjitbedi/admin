@@ -6,7 +6,7 @@
                 <mat-form-field>
                     <input type="text" matInput placeholder="Email" formControlName="email"  [errorStateMatcher]="matcher">
                     <mat-error *ngIf="loginForm.controls['email'].hasError('required')">Required</mat-error>
-                    <mat-error *ngIf="loginForm.controls['email'].hasError('pattern')">Invalid</mat-error>
+                    <mat-error *ngIf="loginForm.controls['email'].hasError('pattern')">Invalid email</mat-error>
                 </mat-form-field>
             </p>
             <p>
@@ -21,7 +21,7 @@
             </p> -->
 
             <div class="button">
-                <button mat-raised-button  color="primary">Login</button>
+                <button mat-raised-button  color="primary" [disabled]="loginForm.invalid ">Login</button>
             </div>
 
         </form>
