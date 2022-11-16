@@ -56,7 +56,9 @@ export class LoginComponent implements OnInit {
               this.errorHandlingService.handle(data);
             }
           },
-          error: (e) => this.errorHandlingService.handle(e),
+          error: (e) => {
+            console.log("kjdsbflksbd");
+            this.errorHandlingService.handle(e)},
           complete: () => console.info('complete'),
         });
     }

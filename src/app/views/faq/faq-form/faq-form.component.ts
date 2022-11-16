@@ -17,6 +17,8 @@ export class FaqFormComponent implements OnInit {
   isViewOnly: any;
   faqForm: FormGroup;
   apiCallActive: boolean = false;
+  questionMaxLength:number = 1000;
+  answerMaxLength:number = 2500;
   constructor(
     public matDialog: MatDialogRef<FaqFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

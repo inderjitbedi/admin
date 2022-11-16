@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthGuard } from 'src/app/providers/auth.guard';
-import { Constants } from 'src/app/providers/constant';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,12 +18,12 @@ export class DashboardComponent implements OnInit {
     public router: Router,
     public authGuard: AuthGuard
   ) {
-    this.currentUrl = this.router.url;
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
       }
     });
+    
   }
   options = {
     bottom: 0,
@@ -33,8 +32,10 @@ export class DashboardComponent implements OnInit {
   };
   ngOnInit(): void {}
 
-  currentUrl: any = Constants.Pages.FAQ_LIST;
+  currentUrl: any;
   ngAfterViewInit() {
+    this.currentUrl = this.router.url;
+
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
       if (res.matches) {
         this.sidenav.mode = 'over';
@@ -43,6 +44,7 @@ export class DashboardComponent implements OnInit {
         this.sidenav.mode = 'side';
         this.sidenav.open();
       }
+      
     });
   }
   logout() {

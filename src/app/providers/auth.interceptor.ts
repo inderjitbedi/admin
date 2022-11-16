@@ -7,11 +7,12 @@ import { AlertService } from './alert.service';
 import { Constants } from './constant';
 import { of as throwError, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ErrorHandlingService } from './error-handling.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(public authGuard: AuthGuard, private alertService: AlertService) { }
+  constructor(public authGuard: AuthGuard, private alertService: AlertService,private errorHandlingService:ErrorHandlingService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): any {
     let newReq = request;
     const access_token = localStorage.getItem('auth_token');
@@ -20,9 +21,11 @@ export class AuthInterceptor implements HttpInterceptor {
     } 
     return next.handle(newReq).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          return this.handle401Error();
-        }
+        console.log("err")
+        this.errorHandlingService.handle(error)
+        // if (error.status === 401) {
+        //   return this.handle401Error();
+        // }
         return throwError(error);
       })
     );
