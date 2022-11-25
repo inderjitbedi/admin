@@ -14,6 +14,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
 import { LoaderService } from './providers/loader.service';
 import { LoaderModule } from './views/common/loader/loader.module';
+import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [AppComponent],

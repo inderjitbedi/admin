@@ -5,7 +5,7 @@
 <mat-sidenav-container>
     <mat-sidenav class="mat-elevation-z8 sidenav">
         <button mat-button class="menu-button active" routerLink="/dashboard/faq"
-            [ngClass]="{'active': currentUrl.indexOf('faq')>-1}">
+            [ngClass]="{'active': currentUrl?.indexOf('faq')>-1}">
             <mat-icon>question_answer</mat-icon>
             <span>FAQ</span>
         </button>

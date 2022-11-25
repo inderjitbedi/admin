@@ -3,6 +3,7 @@ export const apiConstants = {
     faq:'api/faq/list',
     deleteFaq:'api/faq/delete',
     createFaq:'api/faq/create',
+    upload:'api/file/upload'
 };
 
 

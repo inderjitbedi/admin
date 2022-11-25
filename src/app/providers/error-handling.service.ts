@@ -10,9 +10,7 @@ export class ErrorHandlingService {
     constructor(public alertService: AlertService, private authGuard: AuthGuard) { }
 
     handle(error:any): void {
-        console.log("ErrorHandlingService:error",error);
-        
-        if (error && error.statusCode === 401) {
+        if (error && error?.error?.statusCode === 401) {
             this.authGuard.sessionExpired();
         } else if (typeof error === 'string') {
             this.alertService.notify(error);

@@ -9,13 +9,11 @@ import {
 import { Observable } from 'rxjs';
 import { Constants } from './constant';
 import { AlertService } from './alert.service';
-import { GetSetService } from './getSet.provider';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(
     private router: Router,
-    private getSetService: GetSetService,
     public alertService: AlertService
   ) {}
 
@@ -35,7 +33,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkLogin(url: string): boolean {
-    console.log("checkLogin:url = ",url)
     if (!localStorage.getItem('auth_token')) {
       if (url.indexOf('login') === -1) {
         this.router.navigate([Constants.Pages.LOGIN]);
@@ -44,8 +41,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return true;
       }
     } else {
-      
-    console.log("checkLogin:else:url = ",url)
       if (url.indexOf('login') > -1) {
         this.router.navigate([Constants.Pages.DASHBOARD]);
         return false;
@@ -73,7 +68,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   clearAll(): void {
     this.router.navigate([Constants.Pages.LOGIN]);
-    localStorage.removeItem('user_info');
     localStorage.removeItem('auth_token');
   }
 }

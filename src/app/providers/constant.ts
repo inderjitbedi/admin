@@ -25,4 +25,9 @@ export namespace Constants {
     '1': 'Admin',
     '2': 'Viewer',
   };
+  export const allowedFileExtentions = ['txt', 'doc', 'docx', 'pdf', 'xls', 'xlsx', 'png', 'jpg', 'jpeg'];
+  export const allowedImageFileExtentions = ['png', 'jpg', 'jpeg'];
+  export const viewableFileExtentions = ['png', 'jpg', 'jpeg']; // , 'pdf'];
+  export const maximumFileSize = 4000000;
+
 }

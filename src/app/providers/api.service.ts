@@ -18,4 +18,15 @@ export class CommonAPIService {
   delete(apiUrl:String): Observable<any> {
     return this.http.delete(environment.baseUrl + apiUrl);
   }
+  upload(apiUrl:String, file:any): Observable<any> {
+    const formData = new FormData();
+    // Object.keys(files).forEach(file => {
+    formData.append('files', file);
+    // });
+    return this.http.post(environment.baseUrl + apiUrl, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
 }

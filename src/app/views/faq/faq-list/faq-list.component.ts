@@ -7,6 +7,13 @@ import { ErrorHandlingService } from 'src/app/providers/error-handling.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { FaqFormComponent } from '../faq-form/faq-form.component';
+import { AlertService } from 'src/app/providers/alert.service';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+// import { map } from 'rxjs';
+import { environment } from 'src/environments/environment';
+// import { Constants } from 'src/app/providers/constant';
+
 @Component({
   selector: 'app-faq-list',
   templateUrl: './faq-list.component.html',
@@ -15,19 +22,21 @@ import { FaqFormComponent } from '../faq-form/faq-form.component';
 export class FaqListComponent implements OnInit {
   addUserDialogRef: any;
   displayedColumns: string[];
-  dataSource: any ;
+  dataSource: any;
   activeApiCall: boolean = true;
 
   constructor(
     private apiService: CommonAPIService,
     public dialog: MatDialog,
     private errorHandlingService: ErrorHandlingService,
-    private _snackBar: MatSnackBar
+    private alertService: AlertService,
+    private clipboard: Clipboard,
+    private http: HttpClient
   ) {
-    this.displayedColumns = ['id', 'question', 'action']
+    this.displayedColumns = ['id', 'question', 'action'];
   }
   ngOnInit(): void {
-      this.getFaqs();
+    this.getFaqs();
   }
 
   openFaqForm(isViewOnly: boolean, faqData: any = {}): void {
@@ -52,6 +61,7 @@ export class FaqListComponent implements OnInit {
         this.activeApiCall = false;
         if (data.statusCode === 200) {
           this.dataSource = new MatTableDataSource<any>(data.response);
+          console.log(this.dataSource);
         } else {
           this.errorHandlingService.handle(data);
         }
@@ -70,18 +80,81 @@ export class FaqListComponent implements OnInit {
             const srcData = this.dataSource.data;
             srcData.splice(index, 1);
             this.dataSource.data = srcData;
-            this._snackBar.open(data.message, 'Close', { duration: 3000 });
+            this.alertService.notify(data.message);
           } else {
             this.errorHandlingService.handle(data);
           }
         },
         error: (e) => this.errorHandlingService.handle(e),
-        // complete: () => console.info('complete'),
       });
     }
   }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action);
+  copyText() {
+    this.clipboard.copy(
+      `<iframe width="100%" height="1000px" src="${environment.baseUrl}faq-snippet.html"></iframe>`
+    );
+    this.alertService.notify('IFrame snippet copied!');
   }
+
+  // uploadFiles($event: any): void {
+  //   if ($event.target.value) {
+  //     const file = $event.target.files[0];
+
+  //     const fileName = file.name;
+  //     const fileExtension = fileName
+  //       .split('.')
+  //       [fileName.split('.').length - 1].toLowerCase();
+  //     const fileSize = file.size;
+  //     const allowedFileExtentions = Constants.allowedFileExtentions;
+  //     if (!allowedFileExtentions.find((format) => format === fileExtension)) {
+  //     } else if (fileSize > Constants.maximumFileSize) {
+  //     } else {
+  //       const formData = new FormData();
+  //       formData.append('files', file);
+
+  //       this.uploadFile(formData);
+  //     }
+  //   }
+  // }
+  // uploadingInProgess: boolean = false;
+  // uploadingProgress: any;
+  // uploadFile(formData: any): any {
+  //   this.http
+  //     .post(environment.baseUrl + apiConstants.upload, formData, {
+  //       reportProgress: true,
+  //       observe: 'events',
+  //     })
+  //     .pipe(
+  //       map((event: any) => {
+  //         switch (event.type) {
+  //           case HttpEventType.Sent:
+  //             break;
+  //           case HttpEventType.ResponseHeader:
+  //             this.uploadingInProgess = false;
+  //             break;
+  //           case HttpEventType.UploadProgress:
+  //             this.uploadingProgress = Math.round(
+  //               (event.loaded / event.total) * 100
+  //             );
+  //             break;
+  //           case HttpEventType.Response:
+  //             if (event.body.statusCode === 200) {
+  //               const file = event.body.response[0];
+  //               const fileObject: any = {
+  //                 url: file.value,
+  //                 tempUrl: file.key,
+  //                 size: file.size,
+  //                 name: file.name,
+  //               };
+  //             } else {
+  //               this.errorHandlingService.handle(event.body);
+  //             }
+  //             setTimeout(() => {
+  //               this.uploadingProgress = 0;
+  //             }, 500);
+  //         }
+  //       })
+  //     )
+  //     .subscribe();
+  // }
 }

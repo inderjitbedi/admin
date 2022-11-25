@@ -5,6 +5,7 @@ import { FaqFormComponent } from './faq-form/faq-form.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoaderModule } from '../common/loader/loader.module';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 const routes = [
   { path: 'list', component: FaqListComponent },
@@ -15,7 +16,7 @@ const routes = [
 
 @NgModule({
   declarations: [FaqListComponent, FaqFormComponent],
-  
-  imports: [RouterModule.forChild(routes), CommonModule, MaterialModule, LoaderModule],
+  imports: [RouterModule.forChild(routes), CommonModule, MaterialModule, LoaderModule,ClipboardModule],
+  providers:[Clipboard],
 })
 export class FaqModule {}

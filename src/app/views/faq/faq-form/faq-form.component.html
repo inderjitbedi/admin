@@ -10,39 +10,117 @@
             </button>
         </div>
     </mat-toolbar>
-    <!-- <mat-divider></mat-divider> -->
+    <mat-divider class="mt-10"></mat-divider>
     <div class="content p-20 mt-20" fxLayout="column">
         <form [formGroup]="faqForm" fx-layout="column">
-            <div fxLayout="column" fxLayout.gt-xs="row">
-                <mat-form-field [class.mb-10]="faqForm.controls['question'].hasError('required')" fxFlex="100">
-                    <mat-label>Question
-                    </mat-label>
-                    <textarea matInput [rows]="3" formControlName="question" trim autocomplete="off"
-                        [errorStateMatcher]="matcher" maxlength="1000" [readonly]="isViewOnly"></textarea>
-                    <mat-error *ngIf="faqForm.controls['question'].hasError('required')">Required</mat-error>
-                    <mat-hint align="end" *ngIf="!isViewOnly">{{questionMaxLength -
-                        faqForm.controls['question'].value.length}}
-                        {{questionMaxLength - faqForm.controls['question'].value.length>1?'characters':'character'}}
-                        left.</mat-hint>
-                </mat-form-field>
-            </div>
-            <div fxLayout="column" fxLayout.gt-xs="row">
-                <mat-form-field class="mb-10" fxFlex="100">
-                    <mat-label>Answer
-                    </mat-label>
-                    <textarea matInput formControlName="answer" trim autocomplete="off" [errorStateMatcher]="matcher"
-                        maxlength="2500" [rows]="5" [readonly]="isViewOnly"></textarea>
-                    <mat-hint align="end" *ngIf="!isViewOnly">{{answerMaxLength -
-                        faqForm.controls['answer'].value.length}}
-                        {{answerMaxLength - faqForm.controls['answer'].value.length>1?'characters':'character'}}
-                        left.</mat-hint>
-                    <mat-error *ngIf="faqForm.controls['answer'].hasError('required')">Required</mat-error>
-                </mat-form-field>
+            <div fxLayout="column" fxLayout.gt-xs="row" class="faqForm">
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <button type="button" mat-button color="accent" class="deleteFaq">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <mat-form-field [class.mb-10]="faqForm.controls['question'].hasError('required')" fxFlex="100">
+                        <mat-label>Question
+                        </mat-label>
+                        <textarea matInput [rows]="3" formControlName="question" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="1000" [readonly]="isViewOnly"></textarea>
+                        <mat-error *ngIf="faqForm.controls['question'].hasError('required')">Required</mat-error>
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{questionMaxLength -
+                            faqForm.controls['question'].value.length}}
+                            {{questionMaxLength - faqForm.controls['question'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field class="mb-10" fxFlex="100">
+                        <mat-label>Answer
+                        </mat-label>
+                        <textarea matInput formControlName="answer" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="2500" [rows]="5"
+                            [readonly]="isViewOnly"></textarea>
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{answerMaxLength -
+                            faqForm.controls['answer'].value.length}}
+                            {{answerMaxLength - faqForm.controls['answer'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                        <mat-error *ngIf="faqForm.controls['answer'].hasError('required')">Required</mat-error>
+                    </mat-form-field>
+                </div>
+
             </div>
 
+            <div fxLayout="column" fxLayout.gt-xs="row" class="faqForm">
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <button type="button" mat-button color="accent" class="deleteFaq">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <mat-form-field [class.mb-10]="faqForm.controls['question'].hasError('required')" fxFlex="100">
+                        <mat-label>Question
+                        </mat-label>
+                        <textarea matInput [rows]="3" formControlName="question" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="1000" [readonly]="isViewOnly"></textarea>
+                        <mat-error *ngIf="faqForm.controls['question'].hasError('required')">Required</mat-error>
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{questionMaxLength -
+                            faqForm.controls['question'].value.length}}
+                            {{questionMaxLength - faqForm.controls['question'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field class="mb-10" fxFlex="100">
+                        <mat-label>Answer
+                        </mat-label>
+                        <textarea matInput formControlName="answer" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="2500" [rows]="5"
+                            [readonly]="isViewOnly"></textarea>
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{answerMaxLength -
+                            faqForm.controls['answer'].value.length}}
+                            {{answerMaxLength - faqForm.controls['answer'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                        <mat-error *ngIf="faqForm.controls['answer'].hasError('required')">Required</mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div fxLayout="column" fxLayout.gt-xs="row" class="faqForm">
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <button type="button" mat-button color="accent" class="deleteFaq">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <mat-form-field [class.mb-10]="faqForm.controls['question'].hasError('required')" fxFlex="100">
+                        <mat-label>Question
+                        </mat-label>
+                        <textarea matInput [rows]="3" formControlName="question" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="1000" [readonly]="isViewOnly"></textarea>
+                        <mat-error *ngIf="faqForm.controls['question'].hasError('required')">Required</mat-error>
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{questionMaxLength -
+                            faqForm.controls['question'].value.length}}
+                            {{questionMaxLength - faqForm.controls['question'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field class="mb-10" fxFlex="100">
+                        <mat-label>Answer
+                        </mat-label>
+                        <textarea matInput formControlName="answer" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="2500" [rows]="5"
+                            [readonly]="isViewOnly"></textarea>
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{answerMaxLength -
+                            faqForm.controls['answer'].value.length}}
+                            {{answerMaxLength - faqForm.controls['answer'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                        <mat-error *ngIf="faqForm.controls['answer'].hasError('required')">Required</mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
         </form>
+        <div fxlayout="row" fxLayoutAlign="flex-end" fxFlex="100" class="mat-toolbar-footer">
+            <button type="submit" mat-button color="primary" class="addButton">
+                <mat-icon>add</mat-icon> Add more
+            </button>
+        </div>
     </div>
-    <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="center" *ngIf="!isViewOnly">
+    <mat-toolbar class="mat-accent-bg m-0 mt-12" fxLayoutAlign="center" *ngIf="!isViewOnly">
         <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100" class="mat-toolbar-footer">
             <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid "
                 (click)="saveUser()">Save</button>

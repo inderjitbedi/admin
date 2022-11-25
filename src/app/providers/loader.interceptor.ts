@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LoaderService } from './loader.service';
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
-
   apiCounter = 0;
-  timeoutInstance:any;
+  timeoutInstance: any;
   loaderActive = false;
-  constructor(private loaderService: LoaderService) {
-  }
-  // add urls which doesn't require loadering 
+  constructor(private loaderService: LoaderService) {}
+  // add urls which doesn't require loadering
   urlsDontNeedLoader = [];
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.urlsDontNeedLoader.find(url => req.url.indexOf(url) > -1)) {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    if (!this.urlsDontNeedLoader.find((url) => req.url.indexOf(url) > -1)) {
       this.apiCounter += 1;
       if (!this.timeoutInstance) {
         this.timeoutInstance = setTimeout(() => {
@@ -24,20 +30,18 @@ export class LoaderInterceptor implements HttpInterceptor {
         }, 1000);
       }
     }
-    // if (next.handle(req)) {
-      return next.handle(req).pipe(
-        finalize(() => {
-          if (!this.urlsDontNeedLoader.find(url => req.url.indexOf(url) > -1)) {
-            this.apiCounter -= 1;
-            if (!this.apiCounter && this.loaderActive) {
-              this.loaderService.show(false);
-              this.loaderActive = false;
-            }
-            clearTimeout(this.timeoutInstance);
-            this.timeoutInstance = null;
+    return next.handle(req).pipe(
+      finalize(() => {
+        if (!this.urlsDontNeedLoader.find((url) => req.url.indexOf(url) > -1)) {
+          this.apiCounter -= 1;
+          if (!this.apiCounter && this.loaderActive) {
+            this.loaderService.show(false);
+            this.loaderActive = false;
           }
-        })
-      );
-    // }
+          clearTimeout(this.timeoutInstance);
+          this.timeoutInstance = null;
+        }
+      })
+    );
   }
 }

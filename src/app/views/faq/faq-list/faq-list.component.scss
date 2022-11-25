@@ -12,7 +12,7 @@ table {
         margin-right: 5px;
       }
       &:first-child{
-        width: 100px;
+        width: 50px;
         word-break: break-all;
       }
       &:nth-child(2){
@@ -22,7 +22,7 @@ table {
         text-overflow: ellipsis;
       }
       &:last-child{
-        width: 150px;
+        width: 65px;
         // text-align: center;
         align-content: flex-end;
         .mat-icon-button{
@@ -36,10 +36,15 @@ table {
     h1{
       color: #000;
     }
-    // flex-direction: column;
+    flex-direction: row;
     button{
-      margin-left: auto;
-      margin-bottom: 15px;
+      margin: 0 0 15px 15px;
+    }
+    .title,  .title-buttons {
+      width: 50%;
+    }
+    .title-buttons > button{
+      float: right;
     }
   }
 
