@@ -21,7 +21,7 @@
                                 (click)="removeFaq(i)">
                                 <mat-icon>delete</mat-icon>
                             </button>
-                            <mat-form-field [class.mb-10]="faqs.controls[i].controls['question'].hasError('required')"
+                            <mat-form-field [class.mb-10]="faqs.controls[i].controls['question'].touched && faqs.controls[i].controls['question'].hasError('required')"
                                 fxFlex="100">
                                 <mat-label>Question
                                 </mat-label>
