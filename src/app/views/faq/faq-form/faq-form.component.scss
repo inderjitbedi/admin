@@ -8,10 +8,13 @@
     .mat-toolbar-footer {
         display: flex;
         width: 100%;
-        justify-content: right;
 
-        button {
-            margin-left: 10px;
+        &.action-buttons {
+            justify-content: right;
+
+            button {
+                margin-left: 10px;
+            }
         }
     }
 
@@ -21,7 +24,8 @@
     }
 
 }
-.mb-10{
+
+.mb-10 {
     margin-bottom: 10px;
 }
 
@@ -31,40 +35,51 @@
     width: 100%;
     justify-content: space-between;
 }
-.mat-toolbar-single-row{
+
+.mat-toolbar-single-row {
     height: auto;
 }
+
 .mat-form-field-hint-wrapper {
     display: block !important;
     text-align: right;
 }
+.mt-30{
+    
+    margin-top: 30px;
+}
 
-.faqForm{
+.faqForm {
     position: relative;
-    border: 1px solid rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 5px;
     margin-top: 30px;
-    .deleteFaq{
+
+    .deleteFaq {
         position: absolute;
         right: -16px;
         top: -19px;
         padding: 0;
-        background: rgba(0,0,0,0.1);
+        background: rgba(0, 0, 0, 0.1);
         min-width: 10px;
         height: 36px;
         border-radius: 50px;
         width: 34px;
-    
+
     }
+
     // border: 1px solid
 }
-.mat-toolbar-footer{
+
+.mat-toolbar-footer {
     margin-top: 15px;
 }
-.addButton{
+
+.addButton {
     padding: 0;
 }
-.mt-10{
-    margin-top:10px
+
+.mt-10 {
+    margin-top: 10px
 }

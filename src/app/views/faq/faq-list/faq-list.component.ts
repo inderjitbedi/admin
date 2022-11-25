@@ -30,8 +30,7 @@ export class FaqListComponent implements OnInit {
     public dialog: MatDialog,
     private errorHandlingService: ErrorHandlingService,
     private alertService: AlertService,
-    private clipboard: Clipboard,
-    private http: HttpClient
+    private clipboard: Clipboard
   ) {
     this.displayedColumns = ['id', 'question', 'action'];
   }
@@ -55,13 +54,13 @@ export class FaqListComponent implements OnInit {
     });
   }
   getFaqs() {
+    
     this.activeApiCall = true;
     this.apiService.get(apiConstants.faq).subscribe({
       next: (data) => {
         this.activeApiCall = false;
         if (data.statusCode === 200) {
           this.dataSource = new MatTableDataSource<any>(data.response);
-          console.log(this.dataSource);
         } else {
           this.errorHandlingService.handle(data);
         }
