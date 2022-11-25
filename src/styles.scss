@@ -9,3 +9,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .move-to-end{
     margin-top: auto;
 }
+
+.mat-icon-button{
+    background: transparent ;
+}
+
+@media (min-width: 1199px) {
+    .cdk-overlay-pane {
+        width: 780px !important;
+    }
+}
+
+.cdk-overlay-pane {
+    .mat-dialog-container {
+        height: auto;
+        // margin: 20px 0 !important
+    }
+}
