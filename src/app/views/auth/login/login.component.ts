@@ -57,9 +57,7 @@ export class LoginComponent implements OnInit {
             }
           },
           error: (e) => {
-            console.log("kjdsbflksbd");
             this.errorHandlingService.handle(e)},
-          complete: () => console.info('complete'),
         });
     }
   }

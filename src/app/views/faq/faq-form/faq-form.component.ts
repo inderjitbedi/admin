@@ -1,24 +1,27 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { merge } from 'rxjs';
 import { AlertService } from 'src/app/providers/alert.service';
 import { apiConstants } from 'src/app/providers/api.constants';
 import { CommonAPIService } from 'src/app/providers/api.service';
 import { ErrorHandlingService } from 'src/app/providers/error-handling.service';
 import { ErrorStateMatcherService } from 'src/app/providers/error-matcher.service';
+import { Validator } from 'src/app/providers/Validator';
 
 @Component({
   selector: 'app-faq-form',
   templateUrl: './faq-form.component.html',
   styleUrls: ['./faq-form.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
 })
 export class FaqFormComponent implements OnInit {
   isViewOnly: any;
   faqForm: FormGroup;
   apiCallActive: boolean = false;
-  questionMaxLength:number = 1000;
-  answerMaxLength:number = 2500;
+  questionMaxLength: number = 1000;
+  answerMaxLength: number = 2500;
+  faqList: any = [];
   constructor(
     public matDialog: MatDialogRef<FaqFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -30,22 +33,49 @@ export class FaqFormComponent implements OnInit {
   ) {
     this.isViewOnly = data.isViewOnly;
     this.faqForm = this.fb.group({
-      question: [data.question || ''],
-      answer: [data.answer || ''],
+      faqs: this.fb.array([]),
     });
+    this.faqs.push(
+      this.fb.group({
+        question: [data.question || ''],
+        answer: [data.answer || ''],
+      })
+    );
+    this.faqList.push({ id: 'faq' + this.faqList.length + 1 });
     if (!data.isViewOnly) {
-      this.faqForm.controls['question'].setValidators(Validators.required);
-      this.faqForm.controls['answer'].setValidators(Validators.required);
-    }
+      this.faqs['controls'][0]['controls']['question'].setValidators(
+        Validators.required
+      );
+      this.faqs['controls'][0]['controls']['answer'].setValidators(
+        Validators.required
+      );
+    } 
+   
+  }
+  get faqs(): any {
+    return this.faqForm.get('faqs') as FormArray;
+  }
+  addFaq(): void {
+    this.faqList.push({ id: 'faq' + this.faqList.length + 1 });
+    this.faqs.push(
+      this.fb.group({
+        question: ['', [Validators.required]],
+        answer: ['', Validators.required],
+      })
+    );
+  }
+  removeFaq(index: number): void {
+    this.faqs.removeAt(index);
+    this.faqList.splice(index, 1);
   }
 
   ngOnInit(): void {}
-  saveUser(): void {
+  saveFaqs(): void {
     this.apiCallActive = true;
     if (this.faqForm.valid) {
-      const payload = {
-        ...this.faqForm.value,
-      };
+      const payload = [
+        ...this.faqForm.value.faqs,
+      ];
       this.apiService.post(apiConstants.createFaq, payload).subscribe({
         next: (data: any) => {
           this.apiCallActive = false;

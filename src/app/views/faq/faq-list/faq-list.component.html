@@ -1,5 +1,4 @@
 <div class="title-group">
-   
     <div class="title">
         <h1 class="mat-h1">FAQ List</h1>
     </div>
@@ -11,13 +10,12 @@
             Copy FAQ snippet
         </button> 
     </div>
- 
 </div>
 <mat-divider fxFlex="1 0"></mat-divider>
-<p class="no-data" *ngIf="dataSource?.filteredData?.length <= 0">
+<p class="no-data" *ngIf="!activeApiCall && dataSource?.filteredData?.length <= 0">
     There is no FAQ created yet!
 </p>
-<div class="container" *ngIf="dataSource?.filteredData?.length > 0">
+<div class="container" *ngIf="!activeApiCall && dataSource?.filteredData?.length > 0">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> Id </th>
