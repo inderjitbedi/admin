@@ -12,6 +12,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 // import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 // import { Constants } from 'src/app/providers/constant';
 
 @Component({
@@ -24,18 +25,28 @@ export class FaqListComponent implements OnInit {
   displayedColumns: string[];
   dataSource: any;
   activeApiCall: boolean = true;
-
+  selectedFaqCategory: any;
   constructor(
     private apiService: CommonAPIService,
     public dialog: MatDialog,
     private errorHandlingService: ErrorHandlingService,
     private alertService: AlertService,
-    private clipboard: Clipboard
+    private clipboard: Clipboard, private activeRoute: ActivatedRoute
   ) {
     this.displayedColumns = ['id', 'question', 'action'];
+
+    this.activeRoute.params.subscribe({
+      next: (route) => {
+
+        this.selectedFaqCategory = route['id'];
+        console.log( this.selectedFaqCategory)
+   
+        this.getFaqs();
+      }
+    })
   }
   ngOnInit(): void {
-    this.getFaqs();
+
   }
 
   openFaqForm(isViewOnly: boolean, faqData: any = {}): void {
@@ -43,7 +54,7 @@ export class FaqListComponent implements OnInit {
       minWidth: '320px',
       width: '585px',
       disableClose: true,
-      data: { isViewOnly, ...faqData },
+      data: { isViewOnly, ...faqData,selectedFaqCategory:this.selectedFaqCategory },
     });
     this.addUserDialogRef.afterClosed().subscribe({
       next: (data: any) => {
@@ -53,14 +64,16 @@ export class FaqListComponent implements OnInit {
       },
     });
   }
+  selectedFaqCategoryDoc :any;
   getFaqs() {
-    
+
     this.activeApiCall = true;
-    this.apiService.get(apiConstants.faq).subscribe({
+    this.apiService.get(apiConstants.faq + this.selectedFaqCategory).subscribe({
       next: (data) => {
         this.activeApiCall = false;
         if (data.statusCode === 200) {
-          this.dataSource = new MatTableDataSource<any>(data.response);
+          this.dataSource = new MatTableDataSource<any>(data.response?.faqs||[]);
+          this.selectedFaqCategoryDoc = data.response?.category || {};
         } else {
           this.errorHandlingService.handle(data);
         }
@@ -90,7 +103,7 @@ export class FaqListComponent implements OnInit {
   }
   copyText() {
     this.clipboard.copy(
-      `<iframe width="100%" height="1000px" src="${environment.baseUrl}faq-snippet.html"></iframe>`
+      `<iframe width="100%" height="1000px" src="${environment.baseUrl}faq-snippet.html?category=${this.selectedFaqCategory}"></iframe>`
     );
     this.alertService.notify('IFrame snippet copied!');
   }

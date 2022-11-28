@@ -1,0 +1,49 @@
+<div fxLayout="column" class="faq-container">
+
+    <mat-toolbar class="mat-accent-bg m-0" fxLayoutAlign="end flex-end">
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between flex-end" class="mat-toolbar-header">
+            <span class="title dialog-title">{{isViewOnly?'View':'Create'}} FAQ Category</span>
+            <button class="mat-icon-button mat-button" aria-label="Close dialog" mat-button (click)="matDialog.close()">
+                <span class="mat-button-wrapper">
+                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">close</mat-icon>
+                </span>
+            </button>
+        </div>
+    </mat-toolbar>
+    <mat-divider class="mt-10"></mat-divider>
+    <div class="content p-20 mt-20" fxLayout="column">
+        <form [formGroup]="faqForm" fx-layout="column">
+                    <div fxLayout="column" fxLayout.gt-xs="row" [class.faqForm]="!isViewOnly" [class.mt-30]="isViewOnly">
+                        <div fxLayout="column" fxLayout.gt-xs="row">
+                            <mat-form-field [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
+                                fxFlex="100">
+                                <mat-label>Category Name
+                                </mat-label>
+                                <input type="text" matInput formControlName="name" trim autocomplete="off"
+                                    [errorStateMatcher]="matcher" maxlength="50" [readonly]="isViewOnly">
+                                <mat-error *ngIf="faqForm.controls['name'].hasError('required')">Required
+                                </mat-error>
+                                <mat-error *ngIf="!faqForm.controls['name'].hasError('required') && faqForm.controls['name'].hasError('not_unique')">Category name already exists.
+                                </mat-error>
+                                
+                                <mat-hint align="end" *ngIf="!isViewOnly">{{nameMaxLength -
+                                    faqForm.controls['name'].value.length}}
+                                    {{nameMaxLength -
+                                    faqForm.controls['name'].value.length>1?'characters':'character'}}
+                                    left.</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+        </form>
+       
+
+    </div>
+    <mat-toolbar class="mat-accent-bg m-0 mt-12" fxLayoutAlign="center" *ngIf="!isViewOnly">
+        <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100" class="mat-toolbar-footer action-buttons">
+            <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid "
+                (click)="saveFaqs()">Save</button>
+            <button type="button" mat-raised-button class="mr-20" (click)="matDialog.close()">Cancel</button>
+        </div>
+    </mat-toolbar>
+</div>

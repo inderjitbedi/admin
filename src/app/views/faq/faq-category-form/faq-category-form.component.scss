@@ -1,0 +1,85 @@
+.faq-container {
+    position: relative;
+
+    .mat-form-field {
+        width: 100%;
+    }
+
+    .mat-toolbar-footer {
+        display: flex;
+        width: 100%;
+
+        &.action-buttons {
+            justify-content: right;
+
+            button {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .mat-toolbar-single-row {
+        padding: 0;
+        background-color: transparent;
+    }
+
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mat-toolbar-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.mat-toolbar-single-row {
+    height: auto;
+}
+
+.mat-form-field-hint-wrapper {
+    display: block !important;
+    text-align: right;
+}
+.mt-30{
+    
+    margin-top: 30px;
+}
+
+.faqForm {
+    position: relative;
+    // border: 1px solid rgba(0, 0, 0, 0.5);
+    // padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+
+    .deleteFaq {
+        position: absolute;
+        right: -16px;
+        top: -19px;
+        padding: 0;
+        background: rgba(0, 0, 0, 0.1);
+        min-width: 10px;
+        height: 36px;
+        border-radius: 50px;
+        width: 34px;
+
+    }
+
+    // border: 1px solid
+}
+
+.mat-toolbar-footer {
+    margin-top: 15px;
+}
+
+.addButton {
+    padding: 0;
+}
+
+.mt-10 {
+    margin-top: 10px
+}

@@ -8,9 +8,8 @@ export namespace Constants {
   export const Pages = {
     LOGIN: 'login/',
     DASHBOARD:'/dashboard',
-    FAQ_LIST: '/faq/list',
-    FAQ_ADD: '/faq/add',
-    FAQ_EDIT: '/faq/edit',
+    FAQ_CATEGORY_LIST: '/dashboard/faq/categories',
+    FAQ_LIST: '/dashboard/faq/categories-list',
     REMINDERS_LIST: '/reminders/list',
     REMINDERS_ADD: '/reminders/add',
     REMINDERS_EDIT: '/reminders/edit',
@@ -19,6 +18,7 @@ export namespace Constants {
     serverError: 'Server Error.',
     sessionExpired: 'Session Expired.',
   };
+
   export const ConfirmMessages = {};
   export const SuccessMessages = {};
   export const Roles = {

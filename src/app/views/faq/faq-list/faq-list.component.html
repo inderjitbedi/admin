@@ -1,6 +1,6 @@
 <div class="title-group">
     <div class="title">
-        <h1 class="mat-h1">FAQ List</h1>
+        <h1 class="mat-h1" *ngIf="selectedFaqCategoryDoc?.name"><a routerLink="/dashboard/faq">FAQ Category List</a> > {{selectedFaqCategoryDoc?.name|titlecase}} > FAQ List</h1>
     </div>
     <div class="title-buttons ">
         <button mat-raised-button color="accent" (click)="openFaqForm(false)">

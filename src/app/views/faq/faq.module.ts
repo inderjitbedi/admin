@@ -6,16 +6,17 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LoaderModule } from '../common/loader/loader.module';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { FaqCategoriesComponent } from './faq-categories/faq-categories.component';
+import { FaqCategoryFormComponent } from './faq-category-form/faq-category-form.component';
 
 const routes = [
-  { path: 'list', component: FaqListComponent },
-  { path: 'add', component: FaqFormComponent },
-  { path: 'edit/:id', component: FaqFormComponent },
-  { path: '**', redirectTo: 'list' },
+  { path: 'categories', component: FaqCategoriesComponent },
+  { path: 'categories-list/:id', component: FaqListComponent },
+  { path: '**', redirectTo: 'categories' },
 ];
 
 @NgModule({
-  declarations: [FaqListComponent, FaqFormComponent],
+  declarations: [FaqListComponent, FaqFormComponent, FaqCategoriesComponent, FaqCategoryFormComponent],
   imports: [RouterModule.forChild(routes), CommonModule, MaterialModule, LoaderModule,ClipboardModule],
   providers:[Clipboard],
 })

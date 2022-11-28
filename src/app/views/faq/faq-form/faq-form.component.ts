@@ -22,6 +22,7 @@ export class FaqFormComponent implements OnInit {
   questionMaxLength: number = 1000;
   answerMaxLength: number = 2500;
   faqList: any = [];
+  selectedFaqCategory:any;
   constructor(
     public matDialog: MatDialogRef<FaqFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,12 +32,15 @@ export class FaqFormComponent implements OnInit {
     private fb: FormBuilder,
     private alertService: AlertService
   ) {
+    console.log(data)
     this.isViewOnly = data.isViewOnly;
+    this.selectedFaqCategory = data.selectedFaqCategory;
     this.faqForm = this.fb.group({
       faqs: this.fb.array([]),
     });
     this.faqs.push(
       this.fb.group({
+        categoryId:[this.selectedFaqCategory],
         question: [data.question || ''],
         answer: [data.answer || ''],
       })
@@ -59,6 +63,7 @@ export class FaqFormComponent implements OnInit {
     this.faqList.push({ id: 'faq' + this.faqList.length + 1 });
     this.faqs.push(
       this.fb.group({
+        categoryId:[this.selectedFaqCategory],
         question: ['', [Validators.required]],
         answer: ['', Validators.required],
       })
