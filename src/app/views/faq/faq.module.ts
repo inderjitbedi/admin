@@ -8,6 +8,7 @@ import { LoaderModule } from '../common/loader/loader.module';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { FaqCategoriesComponent } from './faq-categories/faq-categories.component';
 import { FaqCategoryFormComponent } from './faq-category-form/faq-category-form.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 const routes = [
   { path: 'categories', component: FaqCategoriesComponent },
@@ -17,7 +18,7 @@ const routes = [
 
 @NgModule({
   declarations: [FaqListComponent, FaqFormComponent, FaqCategoriesComponent, FaqCategoryFormComponent],
-  imports: [RouterModule.forChild(routes), CommonModule, MaterialModule, LoaderModule,ClipboardModule],
+  imports: [RouterModule.forChild(routes), CommonModule, MaterialModule, LoaderModule,ClipboardModule,ColorPickerModule],
   providers:[Clipboard],
 })
 export class FaqModule {}

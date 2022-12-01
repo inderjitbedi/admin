@@ -13,13 +13,41 @@
     <mat-divider class="mt-10"></mat-divider>
     <div class="content p-20 mt-20" fxLayout="column">
         <form [formGroup]="faqForm" fx-layout="column">
-                    <div fxLayout="column" fxLayout.gt-xs="row" [class.faqForm]="!isViewOnly" [class.mt-30]="isViewOnly">
-                        <div fxLayout="column" fxLayout.gt-xs="row">
-                            <mat-form-field [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
-                                fxFlex="100">
-                                <mat-label>Category Name
-                                </mat-label>
-                                <input type="text" matInput formControlName="name" trim autocomplete="off"
+            <div fxLayout="column" fxLayout.gt-xs="row" [class.faqForm]="!isViewOnly" [class.mt-30]="isViewOnly">
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field
+                        [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
+                        fxFlex="100">
+                        <mat-label>Category Name
+                        </mat-label>
+                        <input type="text" matInput formControlName="name" trim autocomplete="off"
+                            [errorStateMatcher]="matcher" maxlength="50" [readonly]="isViewOnly">
+                        <mat-error *ngIf="faqForm.controls['name'].hasError('required')">Required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="!faqForm.controls['name'].hasError('required') && faqForm.controls['name'].hasError('not_unique')">
+                            Category name already exists.
+                        </mat-error>
+
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{nameMaxLength -
+                            faqForm.controls['name'].value.length}}
+                            {{nameMaxLength -
+                            faqForm.controls['name'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field fxFlex="100">
+                        <!-- <mat-label>Color
+                                </mat-label> -->
+                        <input class="curser-pointer" matInput [(colorPicker)]="color" [style.background]="color"
+                            [cpOKButton]="true" [cpOKButtonText]="'Choose'" [cpCancelButton]="true"
+                            [cpSaveClickOutside]="false" [cpDisableInput]="false" [cpAlphaChannel]="'disabled'"
+                            [cpOutputFormat]="'hex'" />
+
+                        <!-- <mat-color-picker></mat-color-picker> -->
+
+                        <!-- <input type="file" matInput formControlName="name" trim autocomplete="off"
                                     [errorStateMatcher]="matcher" maxlength="50" [readonly]="isViewOnly">
                                 <mat-error *ngIf="faqForm.controls['name'].hasError('required')">Required
                                 </mat-error>
@@ -30,18 +58,70 @@
                                     faqForm.controls['name'].value.length}}
                                     {{nameMaxLength -
                                     faqForm.controls['name'].value.length>1?'characters':'character'}}
-                                    left.</mat-hint>
-                            </mat-form-field>
+                                    left.</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayout.gt-xs="row">
+                    <!-- <mat-form-field
+                        [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
+                        fxFlex="100"> -->
+                        <mat-label>Category Name
+                        </mat-label>
+                        <input type="file" formControlName="cover" >
+                        <mat-error *ngIf="faqForm.controls['cover']?.hasError('required')">Required
+                        </mat-error>
+                        <mat-error *ngIf="!faqForm.controls['cover']?.hasError('required') 
+                            && faqForm.controls['name'].hasError('file_type')">
+                            Choose a certain type of file.
+                        </mat-error>
+                        <mat-error *ngIf="!faqForm.controls['cover'].hasError('required')
+                            && !faqForm.controls['name'].hasError('file_type') 
+                            && faqForm.controls['name'].hasError('file_size')">
+                            File size should not be greater than 4MB.
+                        </mat-error>
+
+                        <mat-hint align="end" *ngIf="!isViewOnly">{{nameMaxLength -
+                            faqForm.controls['name'].value.length}}
+                            {{nameMaxLength -
+                            faqForm.controls['name'].value.length>1?'characters':'character'}}
+                            left.</mat-hint>
+                    <!-- </mat-form-field> -->
+                    <div class="filelist-w" *ngIf="uploadingInProgess">
+                        <div class="f-list">
+                            <div class="f-name">{{fileObject.fileName}}</div>
+                            <div class="f-size">{{fileObject.fileSize}}</div>
+                            <div class="progress-b">
+                                <span class="filled"
+                                    [style.width.%]="uploadingProgress> 10 ?uploadingProgress - 10 : uploadingProgress"></span>
+                            </div>
+                            {{uploadingProgress ?
+                            (uploadingProgress- 1)+'%' : '0%' }}
                         </div>
                     </div>
-
+                    <div class="filelist-w" *ngIf="!uploadingInProgess && attachment">
+                        <div class="f-list">
+                            <div class="f-name">{{attachment.name}}</div>
+                            <div class="f-size">{{attachment.size}}</div>
+                        </div>
+                    </div>
+                    <div class="remove-attachment"
+                        *ngIf="!uploadingInProgess && attachment">
+                        <button class="mat-button" aria-label="Close" (click)="removeAttachment()">
+                            <span class="mat-button-wrapper">
+                                <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">
+                                    close
+                                </mat-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </form>
-       
-
     </div>
     <mat-toolbar class="mat-accent-bg m-0 mt-12" fxLayoutAlign="center" *ngIf="!isViewOnly">
-        <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100" class="mat-toolbar-footer action-buttons">
-            <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid "
+        <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100"
+            class="mat-toolbar-footer action-buttons">
+            <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid || apiCallActive"
                 (click)="saveFaqs()">Save</button>
             <button type="button" mat-raised-button class="mr-20" (click)="matDialog.close()">Cancel</button>
         </div>
