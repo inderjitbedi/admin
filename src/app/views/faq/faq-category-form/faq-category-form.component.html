@@ -122,7 +122,7 @@
         <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100"
             class="mat-toolbar-footer action-buttons">
             <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid || apiCallActive"
-                (click)="saveFaqs()">Save</button>
+                (click)="saveFaqs()"> {{faqForm.invalid }} Save {{apiCallActive}}</button>
             <button type="button" mat-raised-button class="mr-20" (click)="matDialog.close()">Cancel</button>
         </div>
     </mat-toolbar>

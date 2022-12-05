@@ -10,6 +10,7 @@ import { debounceTime, map } from "rxjs/operators";
 import { Constants } from 'src/app/providers/constant';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-faq-category-form',
@@ -152,6 +153,7 @@ export class FaqCategoryFormComponent implements OnInit {
                   size: file.size,
                   name: file.name,
                 };
+                this.faqForm.controls['cover'].setValue(this.attachment.file.value)
               } else {
                 this.errorHandlingService.handle(event.body);
               }
