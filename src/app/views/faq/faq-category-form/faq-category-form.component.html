@@ -15,6 +15,8 @@
         <form [formGroup]="faqForm" fx-layout="column">
             <div fxLayout="column" fxLayout.gt-xs="row" [class.faqForm]="!isViewOnly" [class.mt-30]="isViewOnly">
                 <div fxLayout="column" fxLayout.gt-xs="row">
+
+                   
                     <mat-form-field
                         [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
                         fxFlex="100">
@@ -40,6 +42,7 @@
                     <mat-form-field fxFlex="100">
                         <!-- <mat-label>Color
                                 </mat-label> -->
+                              
                         <input class="curser-pointer" matInput [(colorPicker)]="color" [style.background]="color"
                             [cpOKButton]="true" [cpOKButtonText]="'Choose'" [cpCancelButton]="true"
                             [cpSaveClickOutside]="false" [cpDisableInput]="false" [cpAlphaChannel]="'disabled'"
@@ -67,7 +70,16 @@
                         fxFlex="100"> -->
                         <mat-label>Category Name
                         </mat-label>
-                        <input type="file" formControlName="cover" >
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input type='file' id="imageUpload" name="cover" accept=".png, .jpg, .jpeg" formControlName="cover" (change)="uploadFiles($event)"/>
+                                <label for="imageUpload"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+                                </div>
+                            </div>
+                        </div>
                         <mat-error *ngIf="faqForm.controls['cover']?.hasError('required')">Required
                         </mat-error>
                         <mat-error *ngIf="!faqForm.controls['cover']?.hasError('required') 

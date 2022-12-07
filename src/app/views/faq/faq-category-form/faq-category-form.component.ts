@@ -113,10 +113,13 @@ export class FaqCategoryFormComponent implements OnInit {
       this.fileObject.fileSize = file.size;
       const allowedFileExtentions = Constants.allowedFileExtentions;
       if (!allowedFileExtentions.find((format) => format === this.fileObject.fileExtension)) {
+        console.log("file if = ",file)
       } else if (this.fileObject.fileSize > Constants.maximumFileSize) {
+        console.log("file else if = ",file)
       } else {
+        console.log("file else = ",file)
         const formData = new FormData();
-        formData.append('files', file);
+        formData.append('cover', file);
         this.uploadFile(formData);
       }
     }
@@ -143,6 +146,7 @@ export class FaqCategoryFormComponent implements OnInit {
               this.uploadingProgress = Math.round(
                 (event.loaded / event.total) * 100
               );
+              console.log(" this.uploadingProgress = ", this.uploadingProgress)
               break;
             case HttpEventType.Response:
               if (event.body.statusCode === 200) {
@@ -153,6 +157,8 @@ export class FaqCategoryFormComponent implements OnInit {
                   size: file.size,
                   name: file.name,
                 };
+                console.log("  this.attachment = ", this.attachment)
+
                 this.faqForm.controls['cover'].setValue(this.attachment.file.value)
               } else {
                 this.errorHandlingService.handle(event.body);
@@ -176,4 +182,19 @@ export class FaqCategoryFormComponent implements OnInit {
   removeAttachment(): void {
 
   }
+
+//   function readURL(input) {
+//     if (input.files && input.files[0]) {
+//         var reader = new FileReader();
+//         reader.onload = function(e) {
+//             $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+//             $('#imagePreview').hide();
+//             $('#imagePreview').fadeIn(650);
+//         }
+//         reader.readAsDataURL(input.files[0]);
+//     }
+// }
+// $("#imageUpload").change(function() {
+//     readURL(this);
+// });
 }
