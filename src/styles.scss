@@ -37,12 +37,17 @@ body {
         margin: 25px 0 !important
     }
 }
-.curser-pointer{
+.cursor-pointer{
     cursor: pointer !important;
+    
 }
-
-/*
-simon.moll@georgianatilac.com
-https://prezi.com/i/j2jaabtqcnii/wil-process/
-
-*/
+.mat-error{
+    font-size: 12px !important;
+}
+.color-picker{
+    border:0 !important;
+    margin: auto;
+}
+.mt-20{
+    margin-top: 20px !important;
+  }

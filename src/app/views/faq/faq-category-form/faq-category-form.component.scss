@@ -1,3 +1,6 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .faq-container {
     position: relative;
 
@@ -130,68 +133,222 @@
 }
 
 
-.avatar-upload {
-    position: relative;
-    max-width: 100px;
-    margin: 50px auto;
+// Imports
+// 
 
-    .avatar-edit {
-        position: absolute;
-        right: -33px;
-        z-index: 1;
-        top: -17px;
-    
-    input {
-        display: none;
+// Vars and Reset
+// 
+$theme: #454cad;
+$dark-text: #5f6982;
 
-        +label {
-            display: inline-block;
-            width: 34px;
-            height: 34px;
-            margin-bottom: 0;
-            border-radius: 100%;
-            background: #FFFFFF;
-            border: 1px solid transparent;
-            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
-            cursor: pointer;
-            font-weight: normal;
-            transition: all .2s ease-in-out;
+html,
+body,
+* {
+    box-sizing: border-box;
+    font-size: 16px;
+}
 
-            &:hover {
-                background: #f1f1f1;
-                border-color: #d6d6d6;
-            }
+html,
+body {
+    height: 100%;
+    text-align: center;
+}
 
-            &:after {
-                content: "\f040";
-                font-family: 'FontAwesome';
-                color: #757575;
-                position: absolute;
-                top: 10px;
-                left: 0;
-                right: 0;
-                text-align: center;
-                margin: auto;
+body {
+    padding: 2rem;
+    background: #f8f8f8;
+}
+
+h2 {
+    font-family: "Roboto", sans-serif;
+    font-size: 26px;
+    line-height: 1;
+    color: $theme;
+    margin-bottom: 0;
+}
+
+p {
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    color: $dark-text;
+}
+
+// Upload Demo
+// 
+.uploadImage {
+    margin-top: 15px;
+}
+.centerAlign{
+    border: 3px solid #eee;
+    padding:10px 20px;
+    margin: 10px auto;
+    border-radius: 7px;
+}
+.cursor-pointer{
+   display: flex;
+   flex-direction: row;
+   margin-top: 10px;
+}
+.pl20{
+    padding-left: 20px;
+}
+.ml20{
+    margin-left: 20px;
+}
+.color-viewer {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: #000;
+    border: #aeaeae dotted 1px;
+}
+
+.uploader {
+    display: block;
+    clear: both;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 600px;
+
+    label {
+        float: left;
+        clear: both;
+        width: 100%;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        background: #fff;
+        border-radius: 7px;
+        border: 3px solid #eee;
+        transition: all .2s ease;
+        user-select: none;
+
+        &:hover {
+            border-color: $theme;
+        }
+
+        &.hover {
+            border: 3px solid $theme;
+            box-shadow: inset 0 0 0 6px #eee;
+
+            #start {
+                i.fa {
+                    transform: scale(0.8);
+                    opacity: 0.3;
+                }
             }
         }
     }
-}
 
-.avatar-preview {
-    width: 100px;
-    height: 100px;
-    position: relative;
-    border-radius: 4px;
-    border: 6px solid #F8F8F8;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-
-    >div {
+   
+    #start {
+        float: left;
+        clear: both;
         width: 100%;
-        height: 100%;
-        border-radius: 100%;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+
+        &.hidden {
+            display: none;
+        }
+
+        i.fa {
+            font-size: 50px;
+            margin-bottom: 1rem;
+            transition: all .2s ease-in-out;
+        }
     }
-}
+
+    #response {
+        float: left;
+        clear: both;
+        width: 100%;
+
+        &.hidden {
+            display: none;
+        }
+
+        #messages {
+            margin-bottom: .5rem;
+        }
+    }
+
+    #file-image {
+        display: inline-block;
+        margin: 0;
+        width: 100%;
+        &.hidden {
+            display: none;
+        }
+    }
+
+    #notimage {
+        display: block;
+        float: left;
+        clear: both;
+        width: 100%;
+        &.hidden {
+            display: none;
+        }
+    }
+
+    progress,
+    .progress {
+        // appearance: none;
+        display: inline;
+        clear: both;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 180px;
+        height: 8px;
+        border: 0;
+        border-radius: 4px;
+        background-color: #eee;
+        overflow: hidden;
+    }
+
+    .progress[value]::-webkit-progress-bar {
+        border-radius: 4px;
+        background-color: #eee;
+    }
+
+    .progress[value]::-webkit-progress-value {
+        background: linear-gradient(to right, darken($theme, 8%) 0%, $theme 50%);
+        border-radius: 4px;
+    }
+
+    .progress[value]::-moz-progress-bar {
+        background: linear-gradient(to right, darken($theme, 8%) 0%, $theme 50%);
+        border-radius: 4px;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    div {
+        margin: 0 0 .5rem 0;
+        color: $dark-text;
+    }
+
+    .btn {
+        display: inline-block;
+        margin: .5rem .5rem 1rem .5rem;
+        clear: both;
+        font-family: inherit;
+        font-weight: 700;
+        font-size: 14px;
+        text-decoration: none;
+        text-transform: initial;
+        border: none;
+        border-radius: .2rem;
+        outline: none;
+        padding: 0 1rem;
+        height: 36px;
+        line-height: 36px;
+        color: #fff;
+        transition: all 0.2s ease-in-out;
+        box-sizing: border-box;
+        background: $theme;
+        border-color: $theme;
+        cursor: pointer;
+    }
 }

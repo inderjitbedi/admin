@@ -85,4 +85,7 @@ export class FaqCategoriesComponent implements OnInit {
   getFaqlist(row: any) {
     this.router.navigate([Constants.Pages.FAQ_LIST, row._id])
   }
+  editFaqCategory(element:any){
+    this.openFaqCategoryForm(false,element)
+  }
 }

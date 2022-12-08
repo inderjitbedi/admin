@@ -18,32 +18,38 @@ import { ThisReceiver } from '@angular/compiler';
   styleUrls: ['./faq-category-form.component.scss']
 })
 export class FaqCategoryFormComponent implements OnInit {
-
+  environment = environment;
+  toggle: boolean = false
   isViewOnly: any;
+  categoryId: any;
+  categoryName: any;
   faqForm: FormGroup;
   apiCallActive: boolean = false;
   nameMaxLength: number = 50;
   faqList: any = [];
-  color: any = "#000"
+  color: any = '#039ee3';
   constructor(
-    public matDialog: MatDialogRef<FaqCategoryFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private apiService: CommonAPIService,
-    private errorHandlingService: ErrorHandlingService,
-    public matcher: ErrorStateMatcherService,
-    private fb: FormBuilder,
-    private alertService: AlertService, private http: HttpClient
-  ) {
+    public matDialog: MatDialogRef<FaqCategoryFormComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+    private apiService: CommonAPIService, private errorHandlingService: ErrorHandlingService,
+    public matcher: ErrorStateMatcherService, private fb: FormBuilder,
+    private alertService: AlertService, private http: HttpClient) {
+
     this.isViewOnly = data.isViewOnly;
     this.faqForm = this.fb.group({
       name: [data.name || ''],
-      color: [data.color || '', Validators.required],
-      cover: [data.cover || '', Validators.required],
+      color: [data.color || '#039ee3'],
+      cover: [data.coverPath || '', Validators.required],
     });
-    if (!data.isViewOnly) {
-      this.faqForm['controls']['name'].setValidators(
-        Validators.required
-      );
+    this.faqForm['controls']['name'].setValidators(
+      Validators.required
+    );
+    console.log(data);
+
+    if (data._id) {
+      this.categoryId = data._id || null;
+      this.categoryName = data.name;
+      this.color = data.color;
+      this.attachment = { ...data }
     }
     this.faqForm['controls']['name'].valueChanges.pipe(debounceTime(500)).subscribe({
       next: (data) => {
@@ -57,7 +63,7 @@ export class FaqCategoryFormComponent implements OnInit {
   checkFaqCategoryUniqueness() {
 
     let formControl = this.faqForm['controls']['name'];
-    if (formControl.value) {
+    if (formControl.value && formControl.value != this.categoryName) {
       this.apiCallActive = true;
       this.apiService.get(apiConstants.checkCategoryUniqueness + formControl.value.toLowerCase()).subscribe({
         next: (data) => {
@@ -77,47 +83,60 @@ export class FaqCategoryFormComponent implements OnInit {
       });
     }
   }
+  colorChanged(color: any) {
+    this.faqForm.controls['color'].setValue(color)
+  }
   ngOnInit(): void { }
   saveFaqs(): void {
     if (this.faqForm.valid) {
       this.apiCallActive = true;
-      const payload = {
-        cover: this.faqForm.value.cover,
-        name: this.faqForm.value?.name.toLowerCase(),
-        fileName: this.attachment
+      let payload: any = {
+        coverPath: this.faqForm.value.cover,
+        name: this.faqForm.value.name.toLowerCase(),
+        coverFolderName: this.attachment.coverFolderName,
+        coverFileName: this.attachment.coverFileName,
+        color: this.faqForm.value.color,
+      }
+      if (this.categoryId) {
+        payload['_id'] = this.categoryId
       }
       console.log(payload)
-      // this.apiService.post(apiConstants.createFaqCategory, payload).subscribe({
-      //   next: (data: any) => {
-      //     this.apiCallActive = false;
-      //     if (data && (data.statusCode === 200 || data.statusCode === 201)) {
-      //       this.alertService.notify(data.message);
-      //       this.matDialog.close(data);
-      //     } else {
-      //       this.errorHandlingService.handle(data);
-      //     }
-      //   },
-      //   error: (error) => {
-      //     this.apiCallActive = false;
-      //     this.errorHandlingService.handle(error);
-      //   },
-      // });
+      this.apiService.post(apiConstants.createFaqCategory, payload).subscribe({
+        next: (data: any) => {
+          if (data && (data.statusCode === 200 || data.statusCode === 201)) {
+            this.alertService.notify(data.message);
+            this.matDialog.close(data);
+          } else {
+            this.errorHandlingService.handle(data);
+          }
+        },
+        error: (error) => {
+          this.errorHandlingService.handle(error);
+        },
+        complete: () => {
+          this.apiCallActive = false;
+        }
+
+      });
     }
   }
   fileObject: any = {};
   uploadFiles($event: any): void {
     if ($event.target.value) {
+
       const file = $event.target.files[0];
       this.fileObject.fileName = file.name;
       this.fileObject.fileExtension = file.name.split('.')[file.name.split('.').length - 1].toLowerCase();
       this.fileObject.fileSize = file.size;
-      const allowedFileExtentions = Constants.allowedFileExtentions;
+      const allowedFileExtentions = Constants.allowedImageFileExtentions;
       if (!allowedFileExtentions.find((format) => format === this.fileObject.fileExtension)) {
-        console.log("file if = ",file)
+        console.log("file if = ", file)
+        this.alertService.notify('Please make sure your file is in one of these formats: ' + allowedFileExtentions);
       } else if (this.fileObject.fileSize > Constants.maximumFileSize) {
-        console.log("file else if = ",file)
+        console.log("file else if = ", file)
+        this.alertService.notify(`Please make sure your file is less than ${Constants.maximumFileSize / 1000000} MB in size.`);
       } else {
-        console.log("file else = ",file)
+        console.log("file else = ", file)
         const formData = new FormData();
         formData.append('cover', file);
         this.uploadFile(formData);
@@ -126,8 +145,10 @@ export class FaqCategoryFormComponent implements OnInit {
   }
   uploadingInProgess: boolean = false;
   uploadingProgress: any;
-  attachment: any;
+  attachment: any = null;
   uploadFile(formData: any): any {
+    this.uploadingInProgess = true;
+    this.apiCallActive = true;
     this.attachment = null
     this.http
       .post(environment.baseUrl + apiConstants.upload, formData, {
@@ -141,6 +162,7 @@ export class FaqCategoryFormComponent implements OnInit {
               break;
             case HttpEventType.ResponseHeader:
               this.uploadingInProgess = false;
+              this.apiCallActive = false;
               break;
             case HttpEventType.UploadProgress:
               this.uploadingProgress = Math.round(
@@ -149,17 +171,19 @@ export class FaqCategoryFormComponent implements OnInit {
               console.log(" this.uploadingProgress = ", this.uploadingProgress)
               break;
             case HttpEventType.Response:
+              this.apiCallActive = false;
+              console.log("  this.HttpEventType.Response = ", event)
               if (event.body.statusCode === 200) {
-                const file = event.body.response[0];
+                const file = event.body.data;
+
                 this.attachment = {
-                  url: file.value,
-                  tempUrl: file.key,
-                  size: file.size,
-                  name: file.name,
+                  coverFileName: file.filename,
+                  coverFolderName: file.fieldname,
+                  coverPath: file.path
                 };
                 console.log("  this.attachment = ", this.attachment)
 
-                this.faqForm.controls['cover'].setValue(this.attachment.file.value)
+                this.faqForm.controls['cover'].setValue(this.attachment.coverPath)
               } else {
                 this.errorHandlingService.handle(event.body);
               }
@@ -183,18 +207,18 @@ export class FaqCategoryFormComponent implements OnInit {
 
   }
 
-//   function readURL(input) {
-//     if (input.files && input.files[0]) {
-//         var reader = new FileReader();
-//         reader.onload = function(e) {
-//             $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-//             $('#imagePreview').hide();
-//             $('#imagePreview').fadeIn(650);
-//         }
-//         reader.readAsDataURL(input.files[0]);
-//     }
-// }
-// $("#imageUpload").change(function() {
-//     readURL(this);
-// });
+  //   function readURL(input) {
+  //     if (input.files && input.files[0]) {
+  //         var reader = new FileReader();
+  //         reader.onload = function(e) {
+  //             $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+  //             $('#imagePreview').hide();
+  //             $('#imagePreview').fadeIn(650);
+  //         }
+  //         reader.readAsDataURL(input.files[0]);
+  //     }
+  // }
+  // $("#imageUpload").change(function() {
+  //     readURL(this);
+  // });
 }

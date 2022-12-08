@@ -15,8 +15,6 @@
         <form [formGroup]="faqForm" fx-layout="column">
             <div fxLayout="column" fxLayout.gt-xs="row" [class.faqForm]="!isViewOnly" [class.mt-30]="isViewOnly">
                 <div fxLayout="column" fxLayout.gt-xs="row">
-
-                   
                     <mat-form-field
                         [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
                         fxFlex="100">
@@ -38,19 +36,20 @@
                             left.</mat-hint>
                     </mat-form-field>
                 </div>
-                <div fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-form-field fxFlex="100">
-                        <!-- <mat-label>Color
-                                </mat-label> -->
-                              
-                        <input class="curser-pointer" matInput [(colorPicker)]="color" [style.background]="color"
-                            [cpOKButton]="true" [cpOKButtonText]="'Choose'" [cpCancelButton]="true"
-                            [cpSaveClickOutside]="false" [cpDisableInput]="false" [cpAlphaChannel]="'disabled'"
-                            [cpOutputFormat]="'hex'" />
+                <div fxLayout="column" fxLayout.gt-xs="row" class="mt-20">
+                    <div class="cursor-pointer" (click)="toggle = !toggle">
+                        <span> Choose Color <i class="fa fa-eyedropper" aria-hidden="true"></i> *</span>
+                        <span class="color-viewer ml20" [style.background]="faqForm.controls['color']['value']"> <span
+                                class="ml20">&nbsp;{{faqForm.controls['color']['value']}}</span></span>
+                    </div>
+                    <div [hidden]="!toggle" class="centerAlign">
+                        <span #ignoredInput class="cursor-pointer" [(colorPicker)]="color" [cpOKButton]="false"  (colorPickerChange)="colorChanged( $event)"
+                            [cpCancelButton]="false" [cpDisableInput]="true" [cpAlphaChannel]="'disabled'"
+                            [cpDialogDisplay]="'inline'" [cpOutputFormat]="'hex'" [cpToggle]="toggle">
+                        </span>
+                    </div>
 
-                        <!-- <mat-color-picker></mat-color-picker> -->
-
-                        <!-- <input type="file" matInput formControlName="name" trim autocomplete="off"
+                    <!-- <input type="file" matInput formControlName="name" trim autocomplete="off"
                                     [errorStateMatcher]="matcher" maxlength="50" [readonly]="isViewOnly">
                                 <mat-error *ngIf="faqForm.controls['name'].hasError('required')">Required
                                 </mat-error>
@@ -62,43 +61,46 @@
                                     {{nameMaxLength -
                                     faqForm.controls['name'].value.length>1?'characters':'character'}}
                                     left.</mat-hint> -->
-                    </mat-form-field>
+                    <!-- </mat-form-field> -->
                 </div>
-                <div fxLayout="column" fxLayout.gt-xs="row">
-                    <!-- <mat-form-field
-                        [class.mb-10]="faqForm.controls['name'].touched && faqForm.controls['name'].hasError('required')"
-                        fxFlex="100"> -->
-                        <mat-label>Category Name
-                        </mat-label>
-                        <div class="avatar-upload">
-                            <div class="avatar-edit">
-                                <input type='file' id="imageUpload" name="cover" accept=".png, .jpg, .jpeg" formControlName="cover" (change)="uploadFiles($event)"/>
-                                <label for="imageUpload"></label>
+                <div fxLayout="column" fxLayout.gt-xs="row" class="uploadImage mt-20">
+                    <mat-label>Cover Image *
+                    </mat-label>
+                    <div id="file-upload-form" class="uploader">
+                        <input id="file-upload" type="file" name="fileUpload" accept="image/*"
+                            (change)="uploadFiles($event)" />
+                        <label for="file-upload" id="file-drag">
+                            <div id="start" *ngIf="!uploadingInProgess && !attachment">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                <div>Select a file or drag here</div>
+                                <div id="notimage" class="hidden">Please select an image</div>
+                                <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
                             </div>
-                            <div class="avatar-preview">
-                                <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
-                                </div>
+                            <div id="response" *ngIf="uploadingInProgess">
+                                <div id="messages">Uploading... {{uploadingProgress ?
+                                    (uploadingProgress- 1)+'%' : '0%' }}</div>
+                                <progress class="progress" value="{{uploadingProgress}}" max="100">
+                                </progress>
                             </div>
-                        </div>
-                        <mat-error *ngIf="faqForm.controls['cover']?.hasError('required')">Required
-                        </mat-error>
-                        <mat-error *ngIf="!faqForm.controls['cover']?.hasError('required') 
+                            <img id="file-image" *ngIf="!uploadingInProgess && attachment"
+                                [src]="attachment?.coverPath? environment.baseUrl + attachment?.coverFolderName +'/'+ attachment?.coverFileName:''"
+                                alt="Preview" (change)="uploadFiles($event)">
+                        </label>
+                    </div>
+                    <mat-error *ngIf="faqForm.controls['cover']?.hasError('required')">Required
+                    </mat-error>
+                    <mat-error *ngIf="!faqForm.controls['cover']?.hasError('required') 
                             && faqForm.controls['name'].hasError('file_type')">
-                            Choose a certain type of file.
-                        </mat-error>
-                        <mat-error *ngIf="!faqForm.controls['cover'].hasError('required')
+                        Choose a certain type of file.
+                    </mat-error>
+                    <mat-error *ngIf="!faqForm.controls['cover'].hasError('required')
                             && !faqForm.controls['name'].hasError('file_type') 
                             && faqForm.controls['name'].hasError('file_size')">
-                            File size should not be greater than 4MB.
-                        </mat-error>
+                        File size should not be greater than 4MB.
+                    </mat-error>
 
-                        <mat-hint align="end" *ngIf="!isViewOnly">{{nameMaxLength -
-                            faqForm.controls['name'].value.length}}
-                            {{nameMaxLength -
-                            faqForm.controls['name'].value.length>1?'characters':'character'}}
-                            left.</mat-hint>
-                    <!-- </mat-form-field> -->
-                    <div class="filelist-w" *ngIf="uploadingInProgess">
+
+                    <!-- <div class="filelist-w" *ngIf="uploadingInProgess">
                         <div class="f-list">
                             <div class="f-name">{{fileObject.fileName}}</div>
                             <div class="f-size">{{fileObject.fileSize}}</div>
@@ -116,8 +118,10 @@
                             <div class="f-size">{{attachment.size}}</div>
                         </div>
                     </div>
-                    <div class="remove-attachment"
-                        *ngIf="!uploadingInProgess && attachment">
+
+
+
+                    <div class="remove-attachment" *ngIf="!uploadingInProgess && attachment">
                         <button class="mat-button" aria-label="Close" (click)="removeAttachment()">
                             <span class="mat-button-wrapper">
                                 <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">
@@ -125,7 +129,7 @@
                                 </mat-icon>
                             </span>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </form>
@@ -133,8 +137,8 @@
     <mat-toolbar class="mat-accent-bg m-0 mt-12" fxLayoutAlign="center" *ngIf="!isViewOnly">
         <div fxlayout="row" fxLayoutAlign="flex-end" class="mt-12" fxFlex="100"
             class="mat-toolbar-footer action-buttons">
-            <button type="submit" mat-raised-button color="primary" [disabled]="faqForm.invalid || apiCallActive"
-                (click)="saveFaqs()"> {{faqForm.invalid }} Save {{apiCallActive}}</button>
+            <button type="submit" mat-raised-button color="primary"
+                [disabled]="faqForm.invalid || apiCallActive" (click)="saveFaqs()">Save</button>
             <button type="button" mat-raised-button class="mr-20" (click)="matDialog.close()">Cancel</button>
         </div>
     </mat-toolbar>
