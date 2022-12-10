@@ -28,6 +28,11 @@ export class FaqCategoryFormComponent implements OnInit {
   nameMaxLength: number = 50;
   faqList: any = [];
   color: any = '#039ee3';
+  isUnique: boolean = true;
+  fileObject: any = {};
+  uploadingInProgess: boolean = false;
+  uploadingProgress: any;
+  attachment: any = null;
   constructor(
     public matDialog: MatDialogRef<FaqCategoryFormComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private apiService: CommonAPIService, private errorHandlingService: ErrorHandlingService,
@@ -41,10 +46,8 @@ export class FaqCategoryFormComponent implements OnInit {
       cover: [data.coverPath || '', Validators.required],
     });
     this.faqForm['controls']['name'].setValidators(
-      Validators.required
+      [Validators.required, Validators.pattern('^[a-zA-Z0-9 \s]*$')]
     );
-    console.log(data);
-
     if (data._id) {
       this.categoryId = data._id || null;
       this.categoryName = data.name;
@@ -59,11 +62,9 @@ export class FaqCategoryFormComponent implements OnInit {
 
   }
 
-  isUnique: boolean = true;
   checkFaqCategoryUniqueness() {
-
     let formControl = this.faqForm['controls']['name'];
-    if (formControl.value && formControl.value != this.categoryName) {
+    if (formControl.valid && formControl.value && formControl.value != this.categoryName) {
       this.apiCallActive = true;
       this.apiService.get(apiConstants.checkCategoryUniqueness + formControl.value.toLowerCase()).subscribe({
         next: (data) => {
@@ -100,7 +101,6 @@ export class FaqCategoryFormComponent implements OnInit {
       if (this.categoryId) {
         payload['_id'] = this.categoryId
       }
-      console.log(payload)
       this.apiService.post(apiConstants.createFaqCategory, payload).subscribe({
         next: (data: any) => {
           if (data && (data.statusCode === 200 || data.statusCode === 201)) {
@@ -120,32 +120,24 @@ export class FaqCategoryFormComponent implements OnInit {
       });
     }
   }
-  fileObject: any = {};
   uploadFiles($event: any): void {
     if ($event.target.value) {
-
       const file = $event.target.files[0];
       this.fileObject.fileName = file.name;
       this.fileObject.fileExtension = file.name.split('.')[file.name.split('.').length - 1].toLowerCase();
       this.fileObject.fileSize = file.size;
       const allowedFileExtentions = Constants.allowedImageFileExtentions;
       if (!allowedFileExtentions.find((format) => format === this.fileObject.fileExtension)) {
-        console.log("file if = ", file)
         this.alertService.notify('Please make sure your file is in one of these formats: ' + allowedFileExtentions);
       } else if (this.fileObject.fileSize > Constants.maximumFileSize) {
-        console.log("file else if = ", file)
         this.alertService.notify(`Please make sure your file is less than ${Constants.maximumFileSize / 1000000} MB in size.`);
       } else {
-        console.log("file else = ", file)
         const formData = new FormData();
         formData.append('cover', file);
         this.uploadFile(formData);
       }
     }
   }
-  uploadingInProgess: boolean = false;
-  uploadingProgress: any;
-  attachment: any = null;
   uploadFile(formData: any): any {
     this.uploadingInProgess = true;
     this.apiCallActive = true;
@@ -168,21 +160,16 @@ export class FaqCategoryFormComponent implements OnInit {
               this.uploadingProgress = Math.round(
                 (event.loaded / event.total) * 100
               );
-              console.log(" this.uploadingProgress = ", this.uploadingProgress)
               break;
             case HttpEventType.Response:
               this.apiCallActive = false;
-              console.log("  this.HttpEventType.Response = ", event)
               if (event.body.statusCode === 200) {
                 const file = event.body.data;
-
                 this.attachment = {
                   coverFileName: file.filename,
                   coverFolderName: file.fieldname,
                   coverPath: file.path
                 };
-                console.log("  this.attachment = ", this.attachment)
-
                 this.faqForm.controls['cover'].setValue(this.attachment.coverPath)
               } else {
                 this.errorHandlingService.handle(event.body);

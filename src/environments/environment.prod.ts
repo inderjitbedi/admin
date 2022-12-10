@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://admin-server-tmoj.onrender.com/',
+  baseUrl: 'https://lionfish-app-eegmr.ondigitalocean.app/',
   version: '0.0.1',
 };

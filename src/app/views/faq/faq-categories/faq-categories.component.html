@@ -27,10 +27,10 @@
             <th mat-header-cell *matHeaderCellDef> Action </th>
            
             <td mat-cell *matCellDef="let element; let i = index"  (click)=$event.stopPropagation()>
-                <button mat-icon-button (click)="editFaqCategory(element)" aria-label="delete">
+                <button mat-icon-button color="primary" (click)="editFaqCategory(element)" aria-label="delete">
                     <mat-icon>edit</mat-icon>
-
-                </button> <button mat-icon-button color="warn" (click)="deleteFaqCategory(i,element)" aria-label="delete">
+                </button> 
+                <button mat-icon-button color="warn" (click)="deleteFaqCategory(i,element)" aria-label="delete">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>

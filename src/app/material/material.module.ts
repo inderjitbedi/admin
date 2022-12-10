@@ -13,6 +13,8 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 const modules = [
   MatCardModule,
@@ -31,7 +33,8 @@ const modules = [
   CommonModule,
   MatProgressSpinnerModule,
   MatSidenavModule, 
-  MatToolbarModule
+  MatToolbarModule,
+  MatTooltipModule
 ];
 @NgModule({
   imports: [modules],

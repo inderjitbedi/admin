@@ -178,23 +178,28 @@ p {
 .uploadImage {
     margin-top: 15px;
 }
-.centerAlign{
+
+.centerAlign {
     border: 3px solid #eee;
-    padding:10px 20px;
+    padding: 10px 20px;
     margin: 10px auto;
     border-radius: 7px;
 }
-.cursor-pointer{
-   display: flex;
-   flex-direction: row;
-   margin-top: 10px;
+
+.cursor-pointer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
 }
-.pl20{
+
+.pl20 {
     padding-left: 20px;
 }
-.ml20{
+
+.ml20 {
     margin-left: 20px;
 }
+
 .color-viewer {
     height: 20px;
     width: 20px;
@@ -202,6 +207,12 @@ p {
     border-radius: 50%;
     background-color: #000;
     border: #aeaeae dotted 1px;
+}
+
+.info {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
 }
 
 .uploader {
@@ -212,6 +223,7 @@ p {
     max-width: 600px;
 
     label {
+        cursor: pointer !important;
         float: left;
         clear: both;
         width: 100%;
@@ -240,7 +252,7 @@ p {
         }
     }
 
-   
+
     #start {
         float: left;
         clear: both;
@@ -275,6 +287,7 @@ p {
         display: inline-block;
         margin: 0;
         width: 100%;
+
         &.hidden {
             display: none;
         }
@@ -285,6 +298,7 @@ p {
         float: left;
         clear: both;
         width: 100%;
+
         &.hidden {
             display: none;
         }
